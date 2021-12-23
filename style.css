@@ -1,0 +1,16 @@
+body {
+    background-color: green;
+    color: white;
+    padding: 20px
+}
+
+main {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+}
+
+section {
+    padding: 20px;
+    text-align: left;
+}
