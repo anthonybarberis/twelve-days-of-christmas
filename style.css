@@ -8,9 +8,13 @@ main {
     display: flex;
     align-items: center;
     flex-flow: column;
+    font-family: sans-serif;
 }
 
 section {
-    padding: 20px;
     text-align: left;
+}
+
+b {
+    color: red
 }

@@ -75,15 +75,42 @@ const gifts = [
 ]
 
 function giveGift(day) {
+
+    let stats = {
+        dayStats: {
+        },
+        overallStats: {
+            type: {},
+            name: {}
+        }
+    }
+
     let section = document.querySelector("section");
     if (day > 0 && day < 13) {
-        section.append(`On the ${gifts[day - 1].ordinal} day of Christmas, my true love gave to me...`, document.createElement("br"));
+        let opening = document.createElement("p");
+        opening.innerHTML = `<b>On the ${gifts[day - 1].ordinal} day of Christmas, my true love gave to me...<b>`
+        section.append(opening);
         let dayGifts = gifts.slice(0, day);
         while (dayGifts.length > 0) {
             if (dayGifts.length == 1 && day > 1) section.append(`and...`, document.createElement("br"));
             gift = dayGifts.pop()
             section.append(`${gift.numName} ${gift.name}`, document.createElement("br"));
+            if (isNaN(stats.dayStats[gift.type])) stats.dayStats[gift.type] = 0;
+            stats.dayStats[gift.type] += gift.quantity;
+            if (isNaN(stats.overallStats.name[gift.name])) stats.overallStats.name[gift.name] = 0;
+            stats.overallStats.name[gift.name] += gift.quantity * (day - gift.quantity + 1);
+            if (isNaN(stats.overallStats.type[gift.type])) stats.overallStats.type[gift.type] = 0;
+            stats.overallStats.type[gift.type] += gift.quantity * (day - gift.quantity + 1);
         }
+        let dayStats = document.createElement("p");
+        dayStats.innerHTML = `<b>On this day, you received:</b><br> ${JSON.stringify(stats.dayStats).replaceAll(',', '<br>').replaceAll('"', '').replaceAll('{', '').replaceAll('}', '').replaceAll(':', ': ')}`
+        let overallGifts = document.createElement("p");
+        overallGifts.innerHTML = `<b>By this day, you've received these gifts:</b><br> ${JSON.stringify(stats.overallStats.name).replaceAll(',', '<br>').replaceAll('"', '').replaceAll('{', '').replaceAll('}', '').replaceAll(':', ': ')}`
+        let overallTypes = document.createElement("p");
+        overallTypes.innerHTML = `<b>By this day, you've received these types:</b><br> ${JSON.stringify(stats.overallStats.type).replaceAll(',', '<br>').replaceAll('"', '').replaceAll('{', '').replaceAll('}', '').replaceAll(':', ': ')}`
+        section.append(dayStats)
+        section.append(overallGifts)
+        section.append(overallTypes)
     } else section.append('CHRISTMAS IS 12 DAYS!')
 }
 
